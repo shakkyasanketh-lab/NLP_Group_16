@@ -1,0 +1,17 @@
+torch torchvision torchaudio 
+transformers 
+scikit-learn 
+pandas 
+numpy 
+matplotlib 
+seaborn 
+wordcloud 
+nltk 
+spacy 
+lime 
+flask 
+tensorflow 
+keras 
+jupyter 
+ipykernel 
+pickle5 
