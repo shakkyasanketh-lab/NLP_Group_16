@@ -8,9 +8,9 @@
 
 | Member | Student ID | Branch | Models |
 |--------|-----------|--------|--------|
-| Shakkya (Leader) | CIT-24-01-0573 | feature/shakkya-model | SVM + BiLSTM+Attention |
-| Nishen Madawa | CIT-24-01-0256 | feature/member2-model | Logistic Regression + LSTM |
-| Malitha Gayashan | CIT-24-01-0562 | feature/member3-model | Naive Bayes + CNN |
+| Shakkya (Leader) | [Your ID] | feature/shakkya-model | SVM + BiLSTM+Attention |
+| Member 2 | [ID] | feature/member2-model | Logistic Regression + LSTM |
+| Member 3 | [ID] | feature/member3-model | Naive Bayes + CNN |
 
 ---
 
