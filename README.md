@@ -52,10 +52,10 @@ python app.py
 |-------|------|--------|----------|
 | SVM | ML | Shakkya | TBD |
 | BiLSTM + Attention | DL | Shakkya | TBD |
-| Logistic Regression | ML | Member 2 | TBD |
-| LSTM | DL | Member 2 | TBD |
-| Naive Bayes | ML | Member 3 | TBD |
-| CNN | DL | Member 3 | TBD |
+| Logistic Regression | ML | Nishen | TBD |
+| GRU | DL | Nishen | TBD |
+| Naive Bayes | ML | Malitha | TBD |
+| CNN | DL | Malitha | TBD |
 
 ---
 
