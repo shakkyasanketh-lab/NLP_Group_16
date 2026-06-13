@@ -8,7 +8,7 @@
 
 | Member | Student ID | Branch | Models |
 |--------|-----------|--------|--------|
-| Shakkya Sanketh (Leader) | CIT-24-01-0573 | feature/shakkya-model | SVM + BiLSTM+Attention |
+| Shakkya Sanketh (Leader) | CIT-24-01-0573 | feature/shakkya_CIT-24-01-0573 | SVM + BiLSTM+Attention |
 | Nishen Madava | CIT-24-01-0256 | feature/nishen_CIT-24-01-0256 | Logistic Regression + GRU |
 | Malitha Gayashan | CIT-24-01-0562 | malitha_CIT-24-01-0562 | Naive Bayes + CNN |
 
