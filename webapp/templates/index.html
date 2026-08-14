@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PhishGuard AI — Email Threat Scanner</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+<div class="scan-grid"></div>
+
+<header class="topbar">
+  <div class="brand">
+    <span class="brand-mark">◈</span>
+    <span class="brand-name">PhishGuard<span class="brand-ai">AI</span></span>
+  </div>
+  <div class="topbar-meta">
+    <span class="pill">NB + CNN</span>
+    <span class="pill">Neural Nexus · CCS3356</span>
+  </div>
+</header>
+
+<main class="stage">
+
+  <section class="hero">
+    <p class="eyebrow">// email threat analysis</p>
+    <h1>Paste an email. <span class="accent-text">See what it really is.</span></h1>
+    <p class="hero-sub">Two independently trained models — a Naive Bayes classifier and a Convolutional Neural Network — analyse the message and agree on a verdict.</p>
+  </section>
+
+  <section class="console">
+    <div class="console-header">
+      <span class="dot red"></span><span class="dot amber"></span><span class="dot green"></span>
+      <span class="console-title">inbox_sample.eml</span>
+    </div>
+    <textarea id="emailInput" class="console-body" placeholder="Paste the full email content here — subject, body, links and all...&#10;&#10;e.g. &quot;Dear customer, your account has been suspended. Verify your identity immediately by clicking the link below or your access will be permanently revoked...&quot;"></textarea>
+    <div class="console-footer">
+      <span id="charCount" class="char-count">0 characters</span>
+      <button id="scanBtn" class="scan-btn">
+        <span class="scan-btn-label">Run Scan</span>
+        <span class="scan-btn-icon">→</span>
+      </button>
+    </div>
+  </section>
+
+  <section id="resultsSection" class="results hidden">
+
+    <div class="verdict-panel">
+      <div class="gauge-wrap">
+        <svg class="gauge" viewBox="0 0 200 200">
+          <circle class="gauge-track" cx="100" cy="100" r="86"></circle>
+          <circle id="gaugeFill" class="gauge-fill" cx="100" cy="100" r="86"></circle>
+        </svg>
+        <div class="gauge-center">
+          <span id="gaugePct" class="gauge-pct">0%</span>
+          <span class="gauge-label">phishing likelihood</span>
+        </div>
+      </div>
+
+      <div class="verdict-info">
+        <span id="riskBadge" class="risk-badge">ANALYSING</span>
+        <p id="verdictText" class="verdict-text">—</p>
+        <p class="verdict-note">Combined verdict is the mean of both model outputs below.</p>
+      </div>
+    </div>
+
+    <p class="breakdown-label">Model breakdown (<span id="modelCount">0</span>/6 trained models live)</p>
+    <div id="modelBreakdown" class="model-breakdown"></div>
+
+    <details class="trace">
+      <summary>View preprocessed text (what the models actually saw)</summary>
+      <p id="cleanedPreview" class="trace-body"></p>
+    </details>
+
+  </section>
+
+  <section id="errorBox" class="error-box hidden"></section>
+
+</main>
+
+<footer class="footer">
+  <span>Member 3 — Malitha (CIT-24-01-0562) · Naive Bayes &amp; CNN · spaCy preprocessing · PhishGuard AI</span>
+</footer>
+
+<script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>
