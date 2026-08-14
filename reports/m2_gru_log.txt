@@ -1,0 +1,48 @@
+Loaded cleaned dataset: (82483, 2)
+Train: 65986 Test: 16497
+Tokenizer fitted in 8.4s; word_index=628530
+vocab_size: 20000 X_train_seq: (65986, 200)
+Model: "PhishGuard_GRU_Member2"
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━┓
+┃ Layer (type)                    ┃ Output Shape           ┃       Param # ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━┩
+│ embedding (Embedding)           │ (None, 200, 128)       │     2,560,000 │
+├─────────────────────────────────┼────────────────────────┼───────────────┤
+│ gru (GRU)                       │ (None, 128)            │        99,072 │
+├─────────────────────────────────┼────────────────────────┼───────────────┤
+│ dropout (Dropout)               │ (None, 128)            │             0 │
+├─────────────────────────────────┼────────────────────────┼───────────────┤
+│ dense_hidden (Dense)            │ (None, 64)             │         8,256 │
+├─────────────────────────────────┼────────────────────────┼───────────────┤
+│ output (Dense)                  │ (None, 1)              │            65 │
+└─────────────────────────────────┴────────────────────────┴───────────────┘
+ Total params: 2,667,393 (10.18 MB)
+ Trainable params: 2,667,393 (10.18 MB)
+ Non-trainable params: 0 (0.00 B)
+
+Class weights: {0: 1.041577219345877, 1: 0.9616146895948703}
+Training took 12.1 min
+
+=== GRU — FINAL (held-out test set) ===
+Accuracy : 0.9861
+Precision: 0.9850
+Recall   : 0.9882
+F1-score : 0.9866
+ROC-AUC  : 0.9978
+
+              precision    recall  f1-score   support
+
+  Legitimate       0.99      0.98      0.99      7919
+    Phishing       0.99      0.99      0.99      8578
+
+    accuracy                           0.99     16497
+   macro avg       0.99      0.99      0.99     16497
+weighted avg       0.99      0.99      0.99     16497
+
+TN 7790  FP 129  FN 101  TP 8477
+
+              Model  Accuracy  Precision  Recall     F1  ROC-AUC
+Logistic Regression    0.9853     0.9857  0.9861 0.9859   0.9986
+                GRU    0.9861     0.9850  0.9882 0.9866   0.9978
+
+DONE

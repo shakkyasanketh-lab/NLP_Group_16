@@ -1,0 +1,47 @@
+Shape: (82486, 2) Columns: ['text_combined', 'label']
+After cleaning: (82485, 2)
+Class counts:
+ label
+1    42890
+0    39595
+Preprocessing took 82.5s
+Dropped 2 empty rows. Final shape: (82483, 3)
+Top 15 phishing words: aug, email, top, company, please, account, money, one, news, time, cnncom, name, get, alert, information
+Train: 65986 Test: 16497
+TF-IDF fitted in 38.0s -> (65986, 10000)
+
+=== LR BASELINE (C=1.0) ===
+Accuracy 0.9826  Precision 0.9811  Recall 0.9855  F1 0.9833
+
+GridSearch took 6.5s
+  C=0.01    CV F1 = 0.9568 +/- 0.0016
+  C=0.1     CV F1 = 0.9721 +/- 0.0011
+  C=1.0     CV F1 = 0.9825 +/- 0.0015
+  C=10.0    CV F1 = 0.9850 +/- 0.0010
+  C=100.0   CV F1 = 0.9842 +/- 0.0014
+Best C = 10.0 (CV F1 = 0.9850)
+10-fold CV F1: [0.9834, 0.9863, 0.9851, 0.9833, 0.9831, 0.9793, 0.9863, 0.9841, 0.981, 0.9804]
+Mean CV F1: 0.9832 +/- 0.0023
+
+=== LOGISTIC REGRESSION — FINAL (held-out test set) ===
+Accuracy : 0.9853
+Precision: 0.9857
+Recall   : 0.9861
+F1-score : 0.9859
+ROC-AUC  : 0.9986
+
+              precision    recall  f1-score   support
+
+  Legitimate       0.98      0.98      0.98      7919
+    Phishing       0.99      0.99      0.99      8578
+
+    accuracy                           0.99     16497
+   macro avg       0.99      0.99      0.99     16497
+weighted avg       0.99      0.99      0.99     16497
+
+TN 7796  FP 123  FN 119  TP 8459
+
+Top 20 -> PHISHING: josemonkeyorg, replica, http, remove, pill, medication, med, love, click, site, account, quality, viagra, life, money, investment, monkeyorg, phone mobile, mobile email, utf
+Top 20 -> LEGITIMATE: enron, wrote, thanks, university, vince, louise, opensuse, ierant, aug ierant, tony, perl, question, python, february, fork, language, url, meyer, anyone, enron com
+
+DONE — LR artifacts written to /tmp/out
