@@ -11,7 +11,7 @@ Branch: `feature/nishen_CIT-24-01-0256`
 |---|---|
 | Dataset | `phishing_email.csv` (Kaggle, naserabdullahalam) — the combined file |
 | Emails after cleaning | **82,483** |
-| Class balance | 42,891 phishing (52.0%) / 39,592 legitimate (48.0%) |
+| Class balance | 42,888 phishing (52.0%) / 39,595 legitimate (48.0%) |
 | Split | 80 / 20 stratified — 65,986 train / 16,497 test |
 | Preprocessing | lowercase → remove URLs, emails, digits, punctuation → NLTK tokenize → remove stopwords → WordNet lemmatize |
 | ML features | TF-IDF, 10,000 features, unigrams + bigrams, `min_df=2`, fitted on training data only |
