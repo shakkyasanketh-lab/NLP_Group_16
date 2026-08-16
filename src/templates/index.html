@@ -1,113 +1,131 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PhishGuard AI</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PhishGuard AI — Email Threat Analysis</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
 
-<div class="container">
-
-    <!-- Header -->
-    <div class="header">
-        <h1>🛡️ PhishGuard AI</h1>
-        <p>Intelligent Phishing Email Detection System</p>
-        <p class="subtitle">Neural Nexus | CCS3356 NLP | Group 16</p>
+<div class="topbar">
+    <div class="logo"><span class="logo-mark">◈</span> PhishGuard<span class="accent">AI</span></div>
+    <div class="pills">
+        <span class="pill">SVM + BiLSTM</span>
+        <span class="pill pill-muted">Neural Nexus · CCS3356</span>
     </div>
-
-    <!-- Input Section -->
-    <div class="card">
-        <h2>📧 Paste Email Content</h2>
-        <textarea id="emailInput"
-                  placeholder="Paste the email text here and click Analyze..."
-                  rows="8"></textarea>
-        <div class="btn-row">
-            <button onclick="analyzeEmail()" class="btn-analyze">
-                🔍 ANALYZE EMAIL
-            </button>
-            <button onclick="clearAll()" class="btn-clear">
-                🗑️ CLEAR
-            </button>
-        </div>
-    </div>
-
-    <!-- Loading -->
-    <div id="loading" class="loading hidden">
-        <div class="spinner"></div>
-        <p>Analyzing email...</p>
-    </div>
-
-    <!-- Results -->
-    <div id="results" class="hidden">
-
-        <!-- Verdict Banner -->
-        <div id="verdictBanner" class="verdict-banner">
-            <div class="verdict-icon" id="verdictIcon"></div>
-            <div class="verdict-text">
-                <h2 id="verdictText"></h2>
-                <p id="verdictSub"></p>
-            </div>
-            <div class="risk-badge" id="riskBadge"></div>
-        </div>
-
-        <!-- Confidence Meters -->
-        <div class="card">
-            <h2>📊 Model Agreement</h2>
-            <div class="model-row">
-                <div class="model-label">SVM</div>
-                <div class="meter-bar">
-                    <div class="meter-fill" id="svmBar"></div>
-                </div>
-                <div class="model-score" id="svmScore"></div>
-                <div class="model-verdict" id="svmVerdict"></div>
-            </div>
-            <div class="model-row">
-                <div class="model-label">BiLSTM</div>
-                <div class="meter-bar">
-                    <div class="meter-fill" id="bilstmBar"></div>
-                </div>
-                <div class="model-score" id="bilstmScore"></div>
-                <div class="model-verdict" id="bilstmVerdict"></div>
-            </div>
-            <div class="model-row combined">
-                <div class="model-label">COMBINED</div>
-                <div class="meter-bar">
-                    <div class="meter-fill" id="combinedBar"></div>
-                </div>
-                <div class="model-score" id="combinedScore"></div>
-                <div class="model-verdict" id="combinedVerdict"></div>
-            </div>
-        </div>
-
-        <!-- Suspicious Words -->
-        <div class="card" id="suspiciousCard">
-            <h2>🔍 Suspicious Elements Detected</h2>
-            <div id="suspiciousWords" class="words-container"></div>
-        </div>
-
-    </div>
-
-    <!-- Sample Emails -->
-    <div class="card">
-        <h2>💡 Try Sample Emails</h2>
-        <div class="sample-row">
-            <button onclick="loadSample('phishing')" class="btn-sample phishing">
-                ⚠️ Load Phishing Sample
-            </button>
-            <button onclick="loadSample('legit')" class="btn-sample legit">
-                ✅ Load Legitimate Sample
-            </button>
-        </div>
-    </div>
-
 </div>
+
+<main class="container">
+
+    <section class="hero">
+        <p class="eyebrow">// email threat analysis</p>
+        <h1>Paste an email. <span class="accent">See what it really is.</span></h1>
+        <p class="lead">
+            Two independently trained models — a Support Vector Machine and a
+            Bidirectional LSTM with attention — analyse the message and agree on a verdict.
+        </p>
+    </section>
+
+    <section class="terminal-card">
+        <div class="terminal-header">
+            <span class="dot dot-red"></span>
+            <span class="dot dot-yellow"></span>
+            <span class="dot dot-green"></span>
+            <span class="terminal-filename">inbox_sample.eml</span>
+        </div>
+        <textarea id="emailInput"
+                  placeholder='Paste the full email content here — subject, body, links and all...
+
+e.g. "Dear customer, your account has been suspended. Verify your identity immediately by clicking the link below or your access will be permanently revoked..."'
+                  rows="8"></textarea>
+        <div class="terminal-footer">
+            <span class="char-count"><span id="charCount">0</span> characters</span>
+            <div class="footer-actions">
+                <button class="link-btn" onclick="loadSample('phishing')">⚠ phishing sample</button>
+                <button class="link-btn" onclick="loadSample('legit')">✓ legitimate sample</button>
+                <button class="btn-scan" onclick="analyzeEmail()">Run Scan <span class="arrow">→</span></button>
+            </div>
+        </div>
+    </section>
+
+    <section id="loading" class="loading hidden">
+        <div class="spinner"></div>
+        <p>Running SVM + BiLSTM inference…</p>
+    </section>
+
+    <section id="results" class="hidden">
+
+        <div class="result-card">
+            <div class="gauge-wrap">
+                <svg class="gauge" viewBox="0 0 120 120">
+                    <circle class="gauge-track" cx="60" cy="60" r="52"></circle>
+                    <circle id="gaugeProgress" class="gauge-progress" cx="60" cy="60" r="52"></circle>
+                </svg>
+                <div class="gauge-center">
+                    <span id="gaugePct">0%</span>
+                    <small>phishing<br>likelihood</small>
+                </div>
+            </div>
+            <div class="result-text">
+                <span id="riskBadge" class="risk-badge"></span>
+                <h2 id="verdictHeadline"></h2>
+                <p class="result-sub">Combined verdict is the mean of both model outputs below.</p>
+            </div>
+        </div>
+
+        <div class="breakdown-card">
+            <p class="section-label">Model breakdown (2/2 trained models live)</p>
+            <div class="model-grid">
+                <div class="model-card">
+                    <div class="model-card-head">
+                        <span class="model-name">SVM</span>
+                        <span class="model-meta">TF-IDF · Shakkya</span>
+                    </div>
+                    <div class="model-bar"><div id="svmFill" class="model-bar-fill"></div></div>
+                    <div class="model-card-foot">
+                        <span id="svmScore" class="model-score">0%</span>
+                        <span id="svmLabel" class="model-tag"></span>
+                    </div>
+                </div>
+                <div class="model-card">
+                    <div class="model-card-head">
+                        <span class="model-name">BiLSTM+Attention</span>
+                        <span class="model-meta">Word Embeddings · Shakkya</span>
+                    </div>
+                    <div class="model-bar"><div id="bilstmFill" class="model-bar-fill"></div></div>
+                    <div class="model-card-foot">
+                        <span id="bilstmScore" class="model-score">0%</span>
+                        <span id="bilstmLabel" class="model-tag"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div id="suspiciousBlock" class="suspicious-block hidden">
+                <p class="section-label">Suspicious elements detected</p>
+                <div id="suspiciousWords" class="words-container"></div>
+            </div>
+
+            <button class="toggle-btn" onclick="togglePreprocessed()">
+                <span id="toggleArrow">▸</span> View preprocessed text (what the models actually saw)
+            </button>
+            <pre id="preprocessedText" class="preprocessed hidden"></pre>
+        </div>
+
+    </section>
+
+</main>
+
+<footer class="site-footer">
+    Member 1 — Shakkya (CIT-24-01-0573) · SVM &amp; BiLSTM+Attention · NLTK preprocessing · PhishGuard AI
+</footer>
 
 <script>
 const PHISHING_SAMPLE = `Dear Customer,
 
-We have detected suspicious activity on your account. Your account will be 
+We have detected suspicious activity on your account. Your account will be
 SUSPENDED within 24 hours unless you verify your information immediately.
 
 Please click the link below to verify your account and avoid suspension:
@@ -120,10 +138,10 @@ Bank Security Team`;
 
 const LEGIT_SAMPLE = `Hi John,
 
-Just a reminder that our team meeting is scheduled for tomorrow at 3:00 PM 
+Just a reminder that our team meeting is scheduled for tomorrow at 3:00 PM
 in Conference Room B.
 
-The agenda includes the Q3 project review and planning for next quarter. 
+The agenda includes the Q3 project review and planning for next quarter.
 Please bring your progress reports.
 
 Looking forward to seeing everyone there.
@@ -131,13 +149,24 @@ Looking forward to seeing everyone there.
 Best regards,
 Sarah`;
 
+const emailInput = document.getElementById('emailInput');
+const charCount  = document.getElementById('charCount');
+const GAUGE_CIRC = 2 * Math.PI * 52;
+
+document.getElementById('gaugeProgress').style.strokeDasharray = GAUGE_CIRC;
+document.getElementById('gaugeProgress').style.strokeDashoffset = GAUGE_CIRC;
+
+emailInput.addEventListener('input', () => {
+    charCount.textContent = emailInput.value.length;
+});
+
 function loadSample(type) {
-    document.getElementById('emailInput').value =
-        type === 'phishing' ? PHISHING_SAMPLE : LEGIT_SAMPLE;
+    emailInput.value = type === 'phishing' ? PHISHING_SAMPLE : LEGIT_SAMPLE;
+    charCount.textContent = emailInput.value.length;
 }
 
 async function analyzeEmail() {
-    const email = document.getElementById('emailInput').value.trim();
+    const email = emailInput.value.trim();
     if (!email) {
         alert('Please paste an email first!');
         return;
@@ -172,52 +201,65 @@ async function analyzeEmail() {
 function displayResults(data) {
     const isPhishing = data.verdict === 'PHISHING';
 
-    // Verdict banner
-    const banner = document.getElementById('verdictBanner');
-    banner.className = 'verdict-banner ' + (isPhishing ? 'phishing' : 'safe');
-    document.getElementById('verdictIcon').textContent = isPhishing ? '⚠️' : '✅';
-    document.getElementById('verdictText').textContent = data.verdict;
-    document.getElementById('verdictSub').textContent =
-        `Confidence: ${data.confidence}%`;
-    document.getElementById('riskBadge').textContent = data.risk_level;
-    document.getElementById('riskBadge').style.background = data.risk_color;
+    // Gauge
+    const pct = data.confidence;
+    const offset = GAUGE_CIRC * (1 - pct / 100);
+    const progress = document.getElementById('gaugeProgress');
+    progress.style.strokeDashoffset = offset;
+    progress.style.stroke = data.risk_color;
+    document.getElementById('gaugePct').textContent = pct + '%';
 
-    // Model meters
-    setMeter('svm',      data.svm_confidence,    data.svm_verdict);
-    setMeter('bilstm',   data.bilstm_confidence, data.bilstm_verdict);
-    setMeter('combined', data.confidence,        data.verdict);
+    // Risk badge + headline
+    const riskBadge = document.getElementById('riskBadge');
+    riskBadge.textContent = data.risk_level + ' RISK';
+    riskBadge.style.background = data.risk_color;
+
+    document.getElementById('verdictHeadline').textContent =
+        (isPhishing ? 'Looks like phishing' : 'Looks legitimate') +
+        ' (2/2 models agreeing)';
+
+    // Model cards
+    setModelCard('svm',    data.svm_confidence,    data.svm_verdict);
+    setModelCard('bilstm', data.bilstm_confidence, data.bilstm_verdict);
 
     // Suspicious words
+    const block = document.getElementById('suspiciousBlock');
     const wordsDiv = document.getElementById('suspiciousWords');
     if (data.suspicious_words && data.suspicious_words.length > 0) {
         wordsDiv.innerHTML = data.suspicious_words
-            .map(w => `<span class="word-tag">${w}</span>`)
-            .join('');
-        document.getElementById('suspiciousCard').style.display = 'block';
+            .map(w => `<span class="word-tag">${w}</span>`).join('');
+        block.classList.remove('hidden');
     } else {
-        document.getElementById('suspiciousCard').style.display = 'none';
+        block.classList.add('hidden');
     }
+
+    // Preprocessed text
+    document.getElementById('preprocessedText').textContent = data.cleaned_text || '(empty after cleaning)';
+    document.getElementById('preprocessedText').classList.add('hidden');
+    document.getElementById('toggleArrow').textContent = '▸';
 
     document.getElementById('results').classList.remove('hidden');
     document.getElementById('results').scrollIntoView({ behavior: 'smooth' });
 }
 
-function setMeter(id, score, verdict) {
-    const fill    = document.getElementById(id + 'Bar');
-    const scoreEl = document.getElementById(id + 'Score');
-    const verdEl  = document.getElementById(id + 'Verdict');
+function setModelCard(id, score, verdict) {
+    const fill  = document.getElementById(id + 'Fill');
+    const score_el = document.getElementById(id + 'Score');
+    const label = document.getElementById(id + 'Label');
+    const isPhishing = verdict === 'PHISHING';
 
     fill.style.width = score + '%';
-    fill.style.background = score >= 50 ? '#dc3545' : '#28a745';
-    scoreEl.textContent = score + '%';
-    verdEl.textContent  = verdict;
-    verdEl.className    = 'model-verdict ' +
-        (verdict === 'PHISHING' ? 'phishing-text' : 'safe-text');
+    fill.style.background = isPhishing ? 'var(--danger)' : 'var(--safe)';
+    score_el.textContent = score + '%';
+    label.textContent = verdict;
+    label.className = 'model-tag ' + (isPhishing ? 'tag-phishing' : 'tag-safe');
 }
 
-function clearAll() {
-    document.getElementById('emailInput').value = '';
-    document.getElementById('results').classList.add('hidden');
+function togglePreprocessed() {
+    const pre = document.getElementById('preprocessedText');
+    const arrow = document.getElementById('toggleArrow');
+    pre.classList.toggle('hidden');
+    arrow.textContent = pre.classList.contains('hidden') ? '▸' : '▾';
 }
 </script>
 
