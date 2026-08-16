@@ -161,10 +161,14 @@ def analyze():
         bilstm_conf = float(bilstm_out.item())
         bilstm_pred = int(bilstm_conf >= 0.5)
 
-        # ── Final Decision (average of both) ──────────────────
-        avg_conf   = (svm_conf + bilstm_conf) / 2
-        verdict    = "PHISHING" if avg_conf >= 0.5 else "SAFE"
-        risk, color = get_risk_level(avg_conf)
+        # ── Final Decision ──────────────────────────────────────
+        # Per Section 5.4 of the report, the SVM is the single model
+        # selected for deployment (best F1/ROC-AUC, cheapest inference,
+        # and unaffected by the BiLSTM's validation-methodology caveat
+        # in Section 9.2). BiLSTM is run and shown in the UI purely as
+        # a reference signal — it does NOT influence the verdict below.
+        verdict     = "PHISHING" if svm_conf >= 0.5 else "SAFE"
+        risk, color = get_risk_level(svm_conf)
 
         # ── Suspicious Words ──────────────────────────────────
         suspicious = get_suspicious_words(cleaned, word2idx)
@@ -173,7 +177,7 @@ def analyze():
             'verdict':          verdict,
             'risk_level':       risk,
             'risk_color':       color,
-            'confidence':       round(avg_conf * 100, 1),
+            'confidence':       round(svm_conf * 100, 1),
             'svm_confidence':   round(svm_conf * 100, 1),
             'svm_verdict':      'PHISHING' if svm_pred else 'SAFE',
             'bilstm_confidence':round(bilstm_conf * 100, 1),

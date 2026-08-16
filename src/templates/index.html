@@ -13,7 +13,7 @@
 <div class="topbar">
     <div class="logo"><span class="logo-mark">◈</span> PhishGuard<span class="accent">AI</span></div>
     <div class="pills">
-        <span class="pill">SVM + BiLSTM</span>
+        <span class="pill">SVM · deployed model</span>
         <span class="pill pill-muted">Neural Nexus · CCS3356</span>
     </div>
 </div>
@@ -24,8 +24,9 @@
         <p class="eyebrow">// email threat analysis</p>
         <h1>Paste an email. <span class="accent">See what it really is.</span></h1>
         <p class="lead">
-            Two independently trained models — a Support Vector Machine and a
-            Bidirectional LSTM with attention — analyse the message and agree on a verdict.
+            A calibrated Support Vector Machine — the top-performing model from
+            evaluation — analyses the message and returns the verdict below.
+            A BiLSTM+Attention model runs alongside it for reference only.
         </p>
     </section>
 
@@ -53,7 +54,7 @@ e.g. "Dear customer, your account has been suspended. Verify your identity immed
 
     <section id="loading" class="loading hidden">
         <div class="spinner"></div>
-        <p>Running SVM + BiLSTM inference…</p>
+        <p>Running SVM inference…</p>
     </section>
 
     <section id="results" class="hidden">
@@ -72,16 +73,16 @@ e.g. "Dear customer, your account has been suspended. Verify your identity immed
             <div class="result-text">
                 <span id="riskBadge" class="risk-badge"></span>
                 <h2 id="verdictHeadline"></h2>
-                <p class="result-sub">Combined verdict is the mean of both model outputs below.</p>
+                <p class="result-sub">Verdict is the SVM's output — the model selected for deployment (see Section 5.4).</p>
             </div>
         </div>
 
         <div class="breakdown-card">
-            <p class="section-label">Model breakdown (2/2 trained models live)</p>
+            <p class="section-label">Model breakdown — SVM decides the verdict; BiLSTM is shown for reference only</p>
             <div class="model-grid">
-                <div class="model-card">
+                <div class="model-card model-card-active">
                     <div class="model-card-head">
-                        <span class="model-name">SVM</span>
+                        <span class="model-name">SVM <span class="model-role role-deployed">DEPLOYED</span></span>
                         <span class="model-meta">TF-IDF · Shakkya</span>
                     </div>
                     <div class="model-bar"><div id="svmFill" class="model-bar-fill"></div></div>
@@ -90,9 +91,9 @@ e.g. "Dear customer, your account has been suspended. Verify your identity immed
                         <span id="svmLabel" class="model-tag"></span>
                     </div>
                 </div>
-                <div class="model-card">
+                <div class="model-card model-card-reference">
                     <div class="model-card-head">
-                        <span class="model-name">BiLSTM+Attention</span>
+                        <span class="model-name">BiLSTM+Attention <span class="model-role role-reference">REFERENCE ONLY</span></span>
                         <span class="model-meta">Word Embeddings · Shakkya</span>
                     </div>
                     <div class="model-bar"><div id="bilstmFill" class="model-bar-fill"></div></div>
@@ -216,7 +217,7 @@ function displayResults(data) {
 
     document.getElementById('verdictHeadline').textContent =
         (isPhishing ? 'Looks like phishing' : 'Looks legitimate') +
-        ' (2/2 models agreeing)';
+        ' — SVM confidence ' + data.svm_confidence + '%';
 
     // Model cards
     setModelCard('svm',    data.svm_confidence,    data.svm_verdict);

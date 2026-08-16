@@ -251,6 +251,12 @@ textarea::placeholder { color: #454c5e; }
     border-radius: 10px;
     padding: 16px;
 }
+.model-card-active {
+    border-color: var(--accent);
+}
+.model-card-reference {
+    opacity: 0.7;
+}
 .model-card-head {
     display: flex;
     justify-content: space-between;
@@ -259,6 +265,18 @@ textarea::placeholder { color: #454c5e; }
     gap: 8px;
 }
 .model-name { font-weight: 700; font-size: 0.95rem; }
+.model-role {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    padding: 2px 7px;
+    border-radius: 4px;
+    margin-left: 6px;
+    vertical-align: middle;
+}
+.role-deployed  { color: var(--accent); background: var(--accent-dim); }
+.role-reference { color: var(--text-dim); background: rgba(255, 255, 255, 0.05); }
 .model-meta { font-family: var(--font-mono); font-size: 0.68rem; color: var(--text-dim); white-space: nowrap; }
 .model-bar {
     height: 8px;
